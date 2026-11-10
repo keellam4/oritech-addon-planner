@@ -15,11 +15,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -39,9 +43,8 @@ public class PlannerScreen extends Screen {
 
     private static final String P = "gui." + AddonPlanner.MOD_ID + ".";
     private static final int PANEL_W = 170;
-    private static final int COLOR_EXTENDER = 0xFF33CCFF;
-    private static final int COLOR_SLOT = 0xFF4DFF66;
-    private static final int COLOR_CORE = 0xFFFF8C1A;
+    private static final int COLOR_SLOT = 0xFFFFC21A; // matches Oritech's addon slot indicator
+    private static final int INFO_W = 150;
 
     @Nullable
     private final TargetedMachine target;
@@ -273,7 +276,7 @@ public class PlannerScreen extends Screen {
         } else {
             renderPreview(g, px, 8, width - 8 - px, height - 16, partialTick);
         }
-        renderInfo(g, plan);
+        renderInfo(g, plan, px + 6, 14);
     }
 
     private void updateLabels(@Nullable LayoutSolver.Plan plan) {
@@ -297,10 +300,8 @@ public class PlannerScreen extends Screen {
         worldButton.setTooltip(targetMatches() ? null : Tooltip.create(Component.translatable(P + "show_in_world.needs_target")));
     }
 
-    private void renderInfo(GuiGraphics g, @Nullable LayoutSolver.Plan plan) {
-        var x = 8;
-        var y = 26 + 24 * 5 + 4;
-        var w = PANEL_W - 16;
+    // drawn over the top-left of the preview, with the legend in its bottom-left corner
+    private void renderInfo(GuiGraphics g, @Nullable LayoutSolver.Plan plan, int x, int y) {
         var info = machine();
         var lines = new ArrayList<Component>();
         if (plan != null) {
@@ -311,30 +312,47 @@ public class PlannerScreen extends Screen {
                 lines.add(Component.translatable(P + "info.item", plan.extenderCount(), BlockContent.MACHINE_EXTENDER.getName()));
             if (info.usesCores())
                 lines.add(Component.translatable(P + "info.item", info.shape().occupied().size() - 1, coreBlock(coreTier).getName()));
+            if (plan.extenderCount() == 0 && !info.usesCores())
+                lines.add(Component.translatable(P + "info.nothing"));
             if (plan.slotsBelowMachine() > 0)
                 lines.add(Component.translatable(P + "info.below", plan.slotsBelowMachine()).withStyle(ChatFormatting.YELLOW));
-            if (plan.extenderCount() > 0)
-                lines.add(Component.translatable(P + "info.capacitor_tip").withStyle(ChatFormatting.DARK_GRAY));
             if (layered) lines.add(Component.translatable(P + "info.layered_warning").withStyle(ChatFormatting.YELLOW));
         }
         for (var line : lines) {
-            for (var part : font.split(line, w)) {
-                if (y > height - 70) return;
+            for (var part : font.split(line, INFO_W)) {
                 g.drawString(font, part, x, y, 0xFFFFFF);
                 y += 10;
             }
         }
-        // legend
-        y += 4;
-        y = legend(g, x, y, COLOR_EXTENDER, BlockContent.MACHINE_EXTENDER.getName());
-        y = legend(g, x, y, COLOR_SLOT, Component.translatable(P + "legend.slot"));
-        if (info.usesCores()) legend(g, x, y, COLOR_CORE, Component.translatable(P + "legend.core"));
+
+        var legendY = height - 14 - 11 * (info.usesCores() ? 3 : 2);
+        if (plan != null && plan.extenderCount() > 0) {
+            var tip = font.split(Component.translatable(P + "info.capacitor_tip").withStyle(ChatFormatting.GRAY), INFO_W);
+            var tipY = legendY - 10 * tip.size() - 2;
+            for (var part : tip) {
+                g.drawString(font, part, x, tipY, 0xFFFFFF);
+                tipY += 10;
+            }
+        }
+        legendY = legendItem(g, x, legendY, BlockContent.MACHINE_EXTENDER, BlockContent.MACHINE_EXTENDER.getName());
+        legendY = legendColor(g, x, legendY, COLOR_SLOT, Component.translatable(P + "legend.slot"));
+        if (info.usesCores()) legendItem(g, x, legendY, coreBlock(coreTier), coreBlock(coreTier).getName());
     }
 
-    private int legend(GuiGraphics g, int x, int y, int color, Component text) {
-        if (y > height - 66) return y;
-        g.fill(x, y + 1, x + 7, y + 8, color);
-        g.drawString(font, text, x + 11, y, 0xCCCCCC);
+    private int legendItem(GuiGraphics g, int x, int y, Block block, Component text) {
+        var pose = g.pose();
+        pose.pushPose();
+        pose.translate(x - 1, y - 1, 0);
+        pose.scale(0.625f, 0.625f, 1);
+        g.renderItem(new ItemStack(block), 0, 0);
+        pose.popPose();
+        g.drawString(font, text, x + 13, y, 0xCCCCCC);
+        return y + 11;
+    }
+
+    private int legendColor(GuiGraphics g, int x, int y, int color, Component text) {
+        g.fill(x + 1, y, x + 9, y + 8, color);
+        g.drawString(font, text, x + 13, y, 0xCCCCCC);
         return y + 11;
     }
 
@@ -373,7 +391,12 @@ public class PlannerScreen extends Screen {
             if (b.state().getRenderShape() != RenderShape.ENTITYBLOCK_ANIMATED) {
                 mc.getBlockRenderer().renderSingleBlock(b.state(), pose, buffers, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
             }
-            if (b.entity() != null) renderEntity(b.entity(), partialTick, g, buffers);
+            if (b.entity() != null) {
+                renderEntity(b.entity(), partialTick, g, buffers);
+            } else if (b.state().getRenderShape() == RenderShape.ENTITYBLOCK_ANIMATED) {
+                // the machine is drawn by its block entity; if that can't run, at least show where it is
+                LevelRenderer.renderLineBox(pose, buffers.getBuffer(RenderType.lines()), new AABB(0, 0, 0, 1, 1, 1), 1f, 1f, 1f, 1f);
+            }
             pose.popPose();
         }
         buffers.endBatch();

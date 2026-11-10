@@ -199,7 +199,7 @@ public final class Hologram {
         return switch (e.kind()) {
             case CORE -> new float[]{1f, 0.6f, 0.1f, 0.9f};
             case EXTENDER -> new float[]{0.2f, 0.85f, 1f, 0.9f};
-            case SLOT -> new float[]{0.3f, 1f, 0.4f, 0.8f};
+            case SLOT -> new float[]{1f, 0.76f, 0.1f, 0.85f}; // same yellow as Oritech's slot indicator
         };
     }
 }

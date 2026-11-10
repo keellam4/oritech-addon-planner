@@ -11,7 +11,7 @@ Pick a machine, and for multiblocks the Machine Core tier you build it with. The
 - **Layer** shows one layer at a time. Drag to rotate and scroll to zoom.
 - **Show in world** projects the layout onto the machine you opened it from:
   - **Cyan:** extenders to place.
-  - **Green:** free addon slots.
+  - **Yellow:** free addon slots.
   - **Orange:** missing Machine Cores. Yellow means the core is a lower tier than planned.
   - **Red:** a block is in the way.
   - Blocks that are already right disappear. A status line above your hotbar counts what's left.

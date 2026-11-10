@@ -24,6 +24,7 @@
   "gui.oritech_addon_planner.info.quality": "Core quality %s: up to %s extenders",
   "gui.oritech_addon_planner.info.needs": "You need:",
   "gui.oritech_addon_planner.info.item": " %sx %s",
+  "gui.oritech_addon_planner.info.nothing": " nothing extra",
   "gui.oritech_addon_planner.info.below": "%s slots are below the machine, so you'd have to dig for those.",
   "gui.oritech_addon_planner.info.capacitor_tip": "Any extender can be a Capacitor Addon Extender instead (adds energy storage).",
   "gui.oritech_addon_planner.info.layered_warning": "Layered mode only works if your server turned it on in Oritech's config.",
