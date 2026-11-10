@@ -1,0 +1,40 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/keellam4/oritech-addon-planner/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+displayURL="https://github.com/keellam4/oritech-addon-planner"
+credits="Built on Oritech by Rearth."
+# Client-only: servers don't need it, and clients can join servers without it.
+displayTest="IGNORE_ALL_VERSION"
+description='''
+Plans machine addons and extenders for Oritech.
+Pick a machine and a core tier, and it shows the extender layout that fits the most addons, in 3D and as a hologram in your world.
+Client-side only.
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.${mod_id}]]
+    modId="oritech"
+    type="required"
+    versionRange="${oritech_version_range}"
+    ordering="AFTER"
+    side="CLIENT"

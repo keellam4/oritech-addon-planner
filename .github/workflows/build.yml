@@ -1,0 +1,57 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build and test
+        run: ./gradlew build --stacktrace
+
+      - name: Client smoke test (headless, software OpenGL)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri mesa-utils > /dev/null
+          export LIBGL_ALWAYS_SOFTWARE=1
+          athena=$(curl -sfG "https://api.modrinth.com/v2/project/athena-ctm/version" \
+                     --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0].id')
+          timeout 600 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClientSmokeTest -Pathena_version_id="$athena" --stacktrace || echo "client exited with $?"
+          log=run/logs/latest.log
+          if grep -q "Missing or unsupported mandatory dependencies" "$log"; then grep -A5 "Missing or unsupported" "$log"; echo "::error::mod loading failed"; exit 1; fi
+          grep -E "\[smoke test\]" "$log" | tee smoke-summary.txt || true
+          grep -q "\[smoke test\] Title screen reached" "$log" || { echo "::error::client did not reach the title screen"; tail -150 "$log"; exit 1; }
+          grep -qE "Found [1-9][0-9]* Oritech machines" "$log" || { echo "::error::no machines found"; exit 1; }
+
+      - name: Upload smoke test summary
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: smoke-summary
+          path: smoke-summary.txt
+          if-no-files-found: ignore
+
+      - name: Upload mod jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: oritech-addon-planner-jar
+          path: build/libs/*.jar
+          if-no-files-found: error
