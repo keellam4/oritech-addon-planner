@@ -19,6 +19,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.client.gui.screens.AccessibilityOnboardingScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -45,7 +46,8 @@ public final class AddonPlanner {
         NeoForge.EVENT_BUS.addListener(RenderLevelStageEvent.class, Hologram::render);
         if (Boolean.getBoolean(MOD_ID + ".smokeTest")) {
             NeoForge.EVENT_BUS.addListener(ScreenEvent.Init.Post.class, e -> {
-                if (e.getScreen() instanceof TitleScreen && !smokeTestDone) {
+                // a fresh game shows the accessibility screen before the title screen
+                if ((e.getScreen() instanceof TitleScreen || e.getScreen() instanceof AccessibilityOnboardingScreen) && !smokeTestDone) {
                     smokeTestDone = true;
                     SmokeTest.run();
                     Minecraft.getInstance().stop();
