@@ -1,0 +1,39 @@
+[10Nov2026 11:01:54.438] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] Reading machines
+[10Nov2026 11:01:54.483] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] Found 18 Oritech machines with addon slots
+[10Nov2026 11:01:54.490] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:shrinker_block quality 1.0: 3 addon slots with 1 extenders
+[10Nov2026 11:01:54.986] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:shrinker_block quality 7.0: 27 addon slots with 7 extenders
+[10Nov2026 11:01:54.987] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:assembler_block quality 1.0: 7 addon slots with 1 extenders
+[10Nov2026 11:01:55.595] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:assembler_block quality 7.0: 31 addon slots with 7 extenders
+[10Nov2026 11:01:55.596] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:bio_generator_block quality 1.0: 5 addon slots with 1 extenders
+[10Nov2026 11:01:56.042] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:bio_generator_block quality 7.0: 29 addon slots with 7 extenders
+[10Nov2026 11:01:56.042] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:centrifuge_block quality 1.0: 6 addon slots with 1 extenders
+[10Nov2026 11:01:56.230] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:centrifuge_block quality 7.0: 30 addon slots with 7 extenders
+[10Nov2026 11:01:56.231] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:destroyer_block quality 1.0: 8 addon slots with 1 extenders
+[10Nov2026 11:01:56.518] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:destroyer_block quality 7.0: 32 addon slots with 7 extenders
+[10Nov2026 11:01:56.519] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:drone_port_block quality 1.0: 7 addon slots with 1 extenders
+[10Nov2026 11:01:56.826] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:drone_port_block quality 7.0: 31 addon slots with 7 extenders
+[10Nov2026 11:01:56.828] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:laser_arm_block quality 1.0: 5 addon slots with 1 extenders
+[10Nov2026 11:01:57.066] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:laser_arm_block quality 7.0: 29 addon slots with 7 extenders
+[10Nov2026 11:01:57.066] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:fertilizer_block quality 1.0: 5 addon slots with 1 extenders
+[10Nov2026 11:01:57.066] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:foundry_block quality 1.0: 6 addon slots with 1 extenders
+[10Nov2026 11:01:57.310] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:foundry_block quality 7.0: 30 addon slots with 7 extenders
+[10Nov2026 11:01:57.311] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:fragment_forge_block quality 1.0: 9 addon slots with 1 extenders
+[10Nov2026 11:01:57.656] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:fragment_forge_block quality 7.0: 33 addon slots with 7 extenders
+[10Nov2026 11:01:57.656] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:fuel_generator_block quality 1.0: 6 addon slots with 1 extenders
+[10Nov2026 11:01:57.881] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:fuel_generator_block quality 7.0: 30 addon slots with 7 extenders
+[10Nov2026 11:01:57.882] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:cooler_block quality 1.0: 5 addon slots with 1 extenders
+[10Nov2026 11:01:58.015] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:cooler_block quality 7.0: 29 addon slots with 7 extenders
+[10Nov2026 11:01:58.016] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:large_storage_block quality 1.0: 10 addon slots with 1 extenders
+[10Nov2026 11:01:58.265] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:large_storage_block quality 7.0: 34 addon slots with 7 extenders
+[10Nov2026 11:01:58.265] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:lava_generator_block quality 1.0: 5 addon slots with 1 extenders
+[10Nov2026 11:01:58.407] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:lava_generator_block quality 7.0: 29 addon slots with 7 extenders
+[10Nov2026 11:01:58.408] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:placer_block quality 3.0: 13 addon slots with 3 extenders
+[10Nov2026 11:01:58.409] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:small_storage_block quality 3.0: 14 addon slots with 3 extenders
+[10Nov2026 11:01:58.409] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:powered_furnace_block quality 1.0: 5 addon slots with 1 extenders
+[10Nov2026 11:01:58.539] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:powered_furnace_block quality 7.0: 29 addon slots with 7 extenders
+[10Nov2026 11:01:58.540] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] oritech:pulverizer_block quality 2.0: 9 addon slots with 2 extenders
+[10Nov2026 11:02:00.158] [IO-Worker-1/INFO] [Oritech Addon Planner/]: [smoke test] Screenshot planner_oritech_assembler_block.png
+[10Nov2026 11:02:02.185] [IO-Worker-1/INFO] [Oritech Addon Planner/]: [smoke test] Screenshot planner_oritech_pulverizer_block.png
+[10Nov2026 11:02:04.184] [IO-Worker-1/INFO] [Oritech Addon Planner/]: [smoke test] Screenshot planner_oritech_fragment_forge_block.png
+[10Nov2026 11:02:06.150] [Render thread/INFO] [Oritech Addon Planner/]: [smoke test] Title screen reached
+[10Nov2026 11:02:06.152] [IO-Worker-1/INFO] [Oritech Addon Planner/]: [smoke test] Screenshot planner_oritech_large_storage_block.png
