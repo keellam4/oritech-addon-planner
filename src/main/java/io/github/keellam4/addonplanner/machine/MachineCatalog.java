@@ -26,6 +26,7 @@ import java.util.Map;
  */
 public final class MachineCatalog {
 
+    private static final boolean VERBOSE = Boolean.getBoolean(AddonPlanner.MOD_ID + ".smokeTest");
     private static List<MachineInfo> machines;
     private static Map<Block, MachineInfo> byBlock;
 
@@ -48,6 +49,7 @@ public final class MachineCatalog {
             if (!(block instanceof EntityBlock entityBlock)) continue;
             var id = BuiltInRegistries.BLOCK.getKey(block);
             if (!isOritechBased(id, block)) continue;
+            if (VERBOSE) AddonPlanner.LOG.info("[catalog] reading {}", id);
             try {
                 var info = read(id, block, entityBlock.newBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
                 if (info != null) found.add(info);

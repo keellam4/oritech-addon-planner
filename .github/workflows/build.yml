@@ -34,7 +34,19 @@ jobs:
           export LIBGL_ALWAYS_SOFTWARE=1
           athena=$(curl -sfG "https://api.modrinth.com/v2/project/athena-ctm/version" \
                      --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0].id')
-          timeout 600 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClientSmokeTest -Pathena_version_id="$athena" --stacktrace || echo "client exited with $?"
+          xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClientSmokeTest -Pathena_version_id="$athena" --stacktrace > client.out 2>&1 &
+          gradle_pid=$!
+          for i in $(seq 1 90); do
+            if ! kill -0 $gradle_pid 2>/dev/null; then break; fi
+            if grep -q "\[smoke test\] Title screen reached" run/logs/latest.log 2>/dev/null; then sleep 20; break; fi
+            sleep 5
+          done
+          if kill -0 $gradle_pid 2>/dev/null; then
+            echo "::warning::client still running, dumping threads"
+            for p in $(jps -q); do jstack $p | grep -A40 '"Render thread"' || true; done
+            for p in $(jps -q); do kill $p || true; done
+          fi
+          tail -40 client.out
           log=run/logs/latest.log
           if grep -q "Missing or unsupported mandatory dependencies" "$log"; then grep -A5 "Missing or unsupported" "$log"; echo "::error::mod loading failed"; exit 1; fi
           grep -E "\[smoke test\]" "$log" | tee smoke-summary.txt || true

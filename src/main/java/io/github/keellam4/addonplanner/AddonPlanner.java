@@ -81,11 +81,13 @@ public final class AddonPlanner {
 
     private static final class SmokeTest {
         static void run() {
+            LOG.info("[smoke test] Reading machines");
             var machines = MachineCatalog.get();
             LOG.info("[smoke test] Found {} Oritech machines with addon slots", machines.size());
             for (var m : machines) {
                 var qualities = m.usesCores() ? java.util.List.of(1f, 7f) : java.util.List.of(m.fixedQuality());
                 for (var q : qualities) {
+                    LOG.info("[smoke test] Solving {} quality {}", m.id(), q);
                     var plans = PlanCache.get(m, q, false).join();
                     var best = LayoutSolver.best(plans);
                     LOG.info("[smoke test] {} quality {}: {} addon slots with {} extenders", m.id(), q, best.addonSlots(), best.extenderCount());
