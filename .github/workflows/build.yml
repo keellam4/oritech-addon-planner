@@ -10,6 +10,9 @@ concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+permissions:
+  contents: write # to publish smoke-test screenshots to the ci-screenshots branch
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -52,6 +55,20 @@ jobs:
           grep -E "\[smoke test\]" "$log" | tee smoke-summary.txt || true
           grep -q "\[smoke test\] Title screen reached" "$log" || { echo "::error::client did not reach the title screen"; tail -150 "$log"; exit 1; }
           grep -qE "Found [1-9][0-9]* Oritech machines" "$log" || { echo "::error::no machines found"; exit 1; }
+
+      - name: Publish planner screenshots (ci-screenshots branch)
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          shopt -s nullglob
+          shots=(run/screenshots/*.png)
+          [ ${#shots[@]} -eq 0 ] && { echo "no screenshots"; exit 0; }
+          mkdir /tmp/shots && cp "${shots[@]}" /tmp/shots/ && cp smoke-summary.txt /tmp/shots/ 2>/dev/null || true
+          cd /tmp/shots
+          git init -q -b ci-screenshots
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -qm "Screenshots for ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-screenshots
 
       - name: Upload smoke test summary
         if: always()

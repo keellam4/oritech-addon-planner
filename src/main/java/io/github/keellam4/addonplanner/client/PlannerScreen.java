@@ -79,6 +79,12 @@ public class PlannerScreen extends Screen {
         }
     }
 
+    /** Open on a given machine and core tier (used by the smoke test). */
+    public void select(MachineInfo info, int tier) {
+        machineIndex = Math.max(0, machines.indexOf(info));
+        coreTier = tier;
+    }
+
     @Override
     protected void init() {
         var x = 8;
