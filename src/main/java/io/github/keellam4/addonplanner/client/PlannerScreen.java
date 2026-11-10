@@ -274,7 +274,9 @@ public class PlannerScreen extends Screen {
         if (plan == null) {
             g.drawCenteredString(font, Component.translatable(P + "solving"), (px + width) / 2, height / 2, 0xAAAAAA);
         } else {
-            renderPreview(g, px, 8, width - 8 - px, height - 16, partialTick);
+            // keep the model clear of the info text on the left of the panel
+            var shift = Math.min(INFO_W, (width - 8 - px) / 3);
+            renderPreview(g, px + shift, 8, width - 8 - px - shift, height - 16, partialTick);
         }
         renderInfo(g, plan, px + 6, 14);
     }
